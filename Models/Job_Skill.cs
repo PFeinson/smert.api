@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class Job_Skill{
     private int job_skill_id {get; set;}

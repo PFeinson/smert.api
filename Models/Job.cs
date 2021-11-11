@@ -1,10 +1,10 @@
-using System.DateTime;
+using System;
 
 public class Job{
     private int job_id {get; set;}
     private int organization_id {get; set;}
     private string job_title {get; set;}
-    private string job_description {get; set:}
+    private string job_description {get; set;}
     private string job_description_file {get; set;}
     private DateTime job_open_date {get; set;}
     private DateTime job_close_date {get; set;}

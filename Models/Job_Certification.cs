@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class Job_Certification{
     private int job_certification_id {get; set;}

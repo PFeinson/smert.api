@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 public class User {
     private int user_id {get; set;}
     private string user_name {get; set;}

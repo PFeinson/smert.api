@@ -1,13 +1,13 @@
-using System.DateTime;
+using System;
 
 public class Organization{
 private int organization_id {get; set;}
 private string organization_name {get; set;}
 private string organization_website {get; set;}
-private string full_address {get; set'}
+private string full_address {get; set;}
 private string city {get; set;}
 private string state {get; set;}
-private string postal_code {get; set}
+private string postal_code {get; set;}
 private double latitude {get; set;}
 private double longitude {get; set;}
 private byte organization_logo {get; set;}

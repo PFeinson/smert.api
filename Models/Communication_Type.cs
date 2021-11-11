@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class Communication_Type{
     private int communication_type_id {get; set;}

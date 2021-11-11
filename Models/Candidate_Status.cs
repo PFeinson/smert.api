@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class Candidate_Status{
     private int candidate_status_id {get; set;}
