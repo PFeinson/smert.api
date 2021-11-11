@@ -1,4 +1,5 @@
 using System.DateTime;
+
 public class Address_Type{
     private int address_type {get; set;}
     private string communication_result_name {get; set;}
