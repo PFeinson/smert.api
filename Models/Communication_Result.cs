@@ -1,4 +1,4 @@
-using System.DateTime
+using System.DateTime;
 
 public class Communication_Result{
     private int communication_result_id {get; set;}
