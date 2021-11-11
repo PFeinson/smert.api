@@ -27,8 +27,6 @@ namespace smert
         public void ConfigureServices(IServiceCollection services)
         {
             
-            services.AddSingleton<UserService>().IUserService();
-            services.AddSingleton<SecretsManagerService>().ISecretsManagerService();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
