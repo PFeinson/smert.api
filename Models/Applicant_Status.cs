@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class Applicant_Status{
     private int applicant_status_id {get; set;}

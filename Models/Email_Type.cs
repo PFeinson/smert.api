@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class Email_Type{
     private int email_type_id {get; set;}

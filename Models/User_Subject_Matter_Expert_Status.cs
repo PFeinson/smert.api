@@ -1,4 +1,4 @@
-using System.DateTime;
+using System;
 
 public class User_Subject_Matter_Expert_Status {
     private int user_subject_matter_expert_status_id {get; set;}
