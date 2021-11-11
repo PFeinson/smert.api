@@ -13,7 +13,7 @@ public class Job{
     private int total_compensation_amount {get; set;}
     private int number_of_openings {get; set;}
     private string job_postal_code {get; set;}
-    private double job_lattitude {get; set;}
+    private double job_latitude {get; set;}
     private double job_longitude {get; set;}
     private DateTime create_timestamp {get; set;}
     private int create_user_id {get; set;}
