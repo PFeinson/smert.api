@@ -9,6 +9,7 @@ public class User {
     private string middle_name {get ;set;}
     private string last_name {get; set;}
     private string suffix {get; set;}
+    private string gender {get; set;}
     private int referral_user_id {get; set;}
     private DateTime create_timestamp {get; set;}
     private DateTime suppress_timestamp {get; set;}
