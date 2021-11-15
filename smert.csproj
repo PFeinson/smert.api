@@ -12,6 +12,7 @@
     <PackageReference Include="Google.Cloud.Iam.Credentials.V1" Version="1.2.0" />
     <PackageReference Include="Google.Cloud.Spanner.Data" Version="2.0.0"/>
     <PackageReference Include="System.Text.RegularExpressions" version="4.3.1"/>
+    <PackageReference Include="AutoMapper" />
     
   </ItemGroup>
 

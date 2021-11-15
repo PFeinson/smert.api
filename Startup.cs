@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Google.Cloud.SecretManager;
+using smert.Services;
 namespace smert
 {
     public class Startup
