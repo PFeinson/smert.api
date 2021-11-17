@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Google.Cloud.SecretManager;
 using smert.Services;
+using smert.Repositories;
 namespace smert
 {
     public class Startup
@@ -28,11 +29,9 @@ namespace smert
         public void ConfigureServices(IServiceCollection services)
         {   
             // Register Services
-            services.AddTransient<ISpannerService, SpannerService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddAutoMapper();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
