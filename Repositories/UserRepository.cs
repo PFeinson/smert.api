@@ -24,13 +24,13 @@ namespace smert.Repositories {
                             // 'password' will need to be hashed once this hits prod
                             $"{userId}, {userName}, {emailAddress}, {password}, {title}, {firstName}, {middleName}, {lastName}, {suffix}, {gender}, {referralUserId}, {DateTime.Now}"+
                             "}";
-            return _spannerService.ExecuteWriteQueryAsync(query);                                                
+            return await _spannerService.ExecuteWriteQueryAsync(query);                                                
         }
 
         public async Task SelectFromUserTable(int userId) {
             string query = $"SELECT TOP 1 FROM"+
                             $"user WHERE user_id = {userId}";
-            return _spannerService.ExecuteSelectQueryAsync(query);
+            return await _spannerService.ExecuteSelectQueryAsync(query);
         }
     }
 }

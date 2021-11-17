@@ -28,7 +28,11 @@ namespace smert
         public void ConfigureServices(IServiceCollection services)
         {   
             // Register Services
-            services.AddTransient<ISpannerService>();
+            services.AddTransient<ISpannerService, SpannerService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddAutoMapper();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

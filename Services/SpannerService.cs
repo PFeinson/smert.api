@@ -18,8 +18,10 @@ namespace smert.Services {
             // Create connection to Cloud Spanner
             using (var connection = new SpannerConnection(connectionString)) {
                 // Execute a simple SQL statement
-using             using($"{query} as result");
-using                    return reader;
+                var cmd = connection.CreateSelectCommand(
+                    @$"{query} as result");
+                using (var reader = await cmd.ExecuteReaderAsync()) {
+                    return reader;
                 }
             }
         }
