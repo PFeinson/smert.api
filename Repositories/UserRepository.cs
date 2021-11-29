@@ -8,14 +8,13 @@ using System;
 using System.Data;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
+using MySql.Data;
 
 namespace smert.Repositories {
     public class UserRepository : IUserRepository {
         private readonly ILogger<UserRepository> _logger;
-        public MySqlConnection _connection;
-        public UserRepository(ILogger<UserRepository> logger, MySqlConnection Connection) {
+        public UserRepository(ILogger<UserRepository> logger) {
             _logger = logger;
-            _connection = Connection;
         }
         public async Task<object> GetUser(int userId) {
             string query = $"SELECT TOP 1 FROM"+
@@ -40,9 +39,8 @@ namespace smert.Repositories {
                 return ex;
             }
         }   
-        
 
-        private string getConnectionString() {
+        public string getConnectionString() {
             string server = "34.152.7.147";
             string port = "3308";
             string database = "dev-smert-db";

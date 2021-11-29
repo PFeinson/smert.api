@@ -12,7 +12,8 @@ namespace smert.Repositories {
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId );
         */
-        Task<object> GetUser(int userId);                                
+        Task<object> GetUser(int userId);    
+        string getConnectionString();                            
         
     }
 }

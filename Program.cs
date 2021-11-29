@@ -35,6 +35,6 @@ namespace smert
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .Build();
-        }
+        }   
     }
 }

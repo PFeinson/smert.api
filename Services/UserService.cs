@@ -9,10 +9,10 @@ using System.Collections;
 namespace smert.Services { 
     public class UserService : IUserService {
             private readonly ILogger<UserService> _logger;
-            private readonly UserRepository _userRepository;
-         public UserService(ILogger<UserService> logger, UserRepository UserRepository) {
+            private readonly IUserRepository _userRepository;
+         public UserService(ILogger<UserService> logger, IUserRepository userRepository) {
             _logger = logger;
-            _userRepository = UserRepository;
+            _userRepository = userRepository;
         }
         /*
         public async Task InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,

@@ -19,11 +19,12 @@ namespace smert.Controllers
             _logger = logger;
             _userService = userService;
         }
-        /*
-        [HttpGet("{id}"]
+        
+        [HttpGet("GetUserById/{id}")]
+        [HttpWebResponse.Headers]
         public IActionResult Get(int id) {
-            return (IActionResult)_userService.SelectFromUserTable(0);
+            return (IActionResult)_userService.GetUser(0);
         }
-        */
+        
     }
 }
