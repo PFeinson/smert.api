@@ -1,39 +1,41 @@
 using System;
 using System.Collections;
+using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MySqlConnector;
 namespace smert.Models {
     public class User {
         [Required(ErrorMessage = "user id is required")]
-        private int user_id {get; set;}
+        private int userId {get; set;}
         [Required(ErrorMessage = "user name is required")]
-        private string user_name {get; set;}
+        private string userName {get; set;}
         #nullable enable
-        private string? email_address {get; set;}
+        private string? emailAddress {get; set;}
         [Required(ErrorMessage = "password is required")]
         private string password {get; set;}
         #nullable enable
         private string? title {get; set;}
         #nullable enable
-        private string? first_name {get; set; }
+        private string? firstName {get; set; }
         #nullable enable
-        private string? middle_name {get ;set;}
+        private string? middleName {get ;set;}
         #nullable enable
-        private string? last_name {get; set;}
+        private string? lastName {get; set;}
         #nullable enable
         private string? suffix {get; set;}
         #nullable enable
         private string? gender {get; set;}
-        private int? referral_user_id {get; set;}
+        private int? referralUserId {get; set;}
         [Required(ErrorMessage = "creation timestamp is required")]
-        private DateTime create_timestamp {get; set;}
+        private DateTime createTimestamp {get; set;}
         #nullable enable
-        private DateTime? suppress_timestamp {get; set;}
+        private DateTime? suppressTimestamp {get; set;}
         #nullable enable
-        private int? suppress_user_id {get; set;}
+        private int? suppressUserId {get; set;}
         #nullable enable
-        private DateTime? modify_timestamp {get; set;}
+        private DateTime? modifyTimestamp {get; set;}
         #nullable enable
-        private int? modify_user_id {get; set;}
+        private int? modifyUserId {get; set;}
     }
 }

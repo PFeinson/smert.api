@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql;
+using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Google.Cloud.SecretManager;
 using smert.Services;
 using smert.Repositories;
+
 namespace smert
 {
     public class Startup
@@ -29,9 +32,8 @@ namespace smert
         public void ConfigureServices(IServiceCollection services)
         {   
             // Register Services
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserRepository, UserRepository>();
-
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserService, UserService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -61,4 +63,5 @@ namespace smert
             });
         }
     }
+
 }

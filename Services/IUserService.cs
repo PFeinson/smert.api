@@ -7,9 +7,11 @@ using smert.Services;
 using smert.Repositories;
 namespace smert.Services {
     public interface IUserService {
+        /*
         Task InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId );
-        Task SelectFromUserTable(int userId);
+        */
+        Task<object> GetUser(int userId);
     }
 }

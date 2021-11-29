@@ -5,32 +5,55 @@ using smert.Models;
 using smert.Services;
 using System.Threading.Tasks;
 using System;
+using System.Data;
+using System.Collections.Generic;
+using MySql.Data.MySqlClient;
+
 namespace smert.Repositories {
     public class UserRepository : IUserRepository {
         private readonly ILogger<UserRepository> _logger;
-        private readonly SpannerService _spannerService;
-        public UserRepository(ILogger<UserRepository> logger, SpannerService spannerService) {
+        public MySqlConnection _connection;
+        public UserRepository(ILogger<UserRepository> logger, MySqlConnection Connection) {
             _logger = logger;
-            _spannerService = spannerService;
+            _connection = Connection;
         }
-
-        public async Task InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,
-                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
-                                        int? referralUserId ) {
-            string query = $"INSERT "+
-                            $"INTO user"+
-                            $"user_id, user_name, email_address, password, title, first_name, middle_name, last_name, suffix, gender, referral_user_id, create_timestamp"+
-                            "{"+
-                            // 'password' will need to be hashed once this hits prod
-                            $"{userId}, {userName}, {emailAddress}, {password}, {title}, {firstName}, {middleName}, {lastName}, {suffix}, {gender}, {referralUserId}, {DateTime.Now}"+
-                            "}";
-            return await _spannerService.ExecuteWriteQueryAsync(query);                                                
-        }
-
-        public async Task SelectFromUserTable(int userId) {
+        public async Task<object> GetUser(int userId) {
             string query = $"SELECT TOP 1 FROM"+
                             $"user WHERE user_id = {userId}";
-            return await _spannerService.ExecuteSelectQueryAsync(query);
+            try{
+                using (var conn = new MySqlConnection(getConnectionString())) {
+                    Console.WriteLine("Opening MySqlConnection!");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    Dictionary<string, string> output = new Dictionary<string, string>();
+                    while (rdr.Read()) {
+                        output[$"{rdr[0]}"] = $"{rdr[1]}";
+                        Console.WriteLine($"{rdr[0]} {rdr[1]}");
+                    }
+                    Console.WriteLine("Closing MySqlConnection!");
+                    conn.Close();
+                    return output;
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return ex;
+            }
+        }   
+        
+
+        private string getConnectionString() {
+            string server = "34.152.7.147";
+            string port = "3308";
+            string database = "dev-smert-db";
+            string uid = "dev-access-account";
+            string password = "password";
+            string ssl_ca = ".ssl/server-ca.pem";
+            string ssl_cert = ".ssl/client-cert.pem";
+            string ssl_key = ".ssl/client-key.pem";
+            string connectionString = $"SERVER={server};DATABASE={database};PORT={port};UID={uid};PASSWORD={password};ssl-ca={ssl_ca};ssl-cert={ssl_cert};ssl_key{ssl_key};";
+            return connectionString;
         }
+   
     }
 }
