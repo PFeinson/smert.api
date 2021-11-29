@@ -21,7 +21,6 @@ namespace smert.Controllers
         }
         
         [HttpGet("GetUserById/{id}")]
-        [HttpWebResponse.Headers]
         public IActionResult Get(int id) {
             return (IActionResult)_userService.GetUser(0);
         }
