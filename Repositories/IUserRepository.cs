@@ -5,14 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 namespace smert.Repositories {
     public interface IUserRepository {
+        Task<object> GetUserById(int userId);
+        Task<object> GetAllUsers();
         /*
-        Task InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,
+        Task<User> InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId );
-        */
-        Task<object> GetUser(int userId);    
+        */    
         string getConnectionString();                            
         
     }

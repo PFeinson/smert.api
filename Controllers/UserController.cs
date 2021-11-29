@@ -12,17 +12,22 @@ namespace smert.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase {
+    public class UserController : Controller {
         private readonly ILogger<UserController> _logger;
-        private readonly UserService _userService;
-        public UserController(ILogger<UserController> logger, UserService userService) {
+        private readonly IUserService _userService;
+        public UserController(ILogger<UserController> logger, IUserService userService) {
             _logger = logger;
             _userService = userService;
         }
         
         [HttpGet("GetUserById/{id}")]
-        public IActionResult Get(int id) {
-            return (IActionResult)_userService.GetUser(0);
+        public string GetUserById(int id) {
+            return _userService.GetUserById(id).ToString();
+        }
+
+        [HttpGet("Users/AllUsers")]
+        public string Index() {
+            return _userService.GetAllUsers().ToString();
         }
         
     }

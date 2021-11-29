@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using smert.Models;
 using smert.Repositories;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 namespace smert.Services { 
     public class UserService : IUserService {
             private readonly ILogger<UserService> _logger;
@@ -21,8 +21,12 @@ namespace smert.Services {
             return new Task<User>(new User(await _userRepository.InsertNewUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId)));
         }
         */
-        public async Task<object> GetUser(int userId) {
-            return await _userRepository.GetUser(userId);                
+        public async Task<object> GetUserById(int userId) {
+            return await _userRepository.GetUserById(userId);                
+        }
+
+        public async Task<object> GetAllUsers() {
+            return await _userRepository.GetAllUsers();
         }
                                            
     }

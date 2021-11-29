@@ -16,30 +16,77 @@ namespace smert.Repositories {
         public UserRepository(ILogger<UserRepository> logger) {
             _logger = logger;
         }
-        public async Task<object> GetUser(int userId) {
+        public async Task<object> GetUserById(int userId) {
+            // Temporary until we called stored procedures
             string query = $"SELECT TOP 1 FROM"+
-                            $"user WHERE user_id = {userId}";
+                            $"user WHERE user_id = {userId}"+
+                            $"SORT BY ASCENDING;";
             try{
+                // Establish MySqlConnection to be used for this DB operation
                 using (var conn = new MySqlConnection(getConnectionString())) {
+                    // Let the user know that 
                     Console.WriteLine("Opening MySqlConnection!");
                     conn.Open();
+                    // Build MySqlCommand
                     MySqlCommand cmd = new MySqlCommand(query, conn);
+                    // Read Result from query with MySqlDataReader
                     MySqlDataReader rdr = cmd.ExecuteReader();
-                    Dictionary<string, string> output = new Dictionary<string, string>();
+                    var output = new List<object>();
+                    // While there are results contained withint he MySqlDataReader, iterate through and print each 
                     while (rdr.Read()) {
-                        output[$"{rdr[0]}"] = $"{rdr[1]}";
-                        Console.WriteLine($"{rdr[0]} {rdr[1]}");
+                        // Print each entry (Idk if this is what we actually want to do?)
+                        output.Add(rdr[0] + " " + rdr[1]);
                     }
+                    // Print 'Closing MySql' message to console
                     Console.WriteLine("Closing MySqlConnection!");
+                    // Close connection
                     conn.Close();
+                    // return the result of the query
                     return output;
                 }
+            // If there's an exception of any kind, print to console and then return the exception
             } catch (Exception ex) {
                 Console.WriteLine($"Exception: {ex.ToString()}");
                 return ex;
             }
+        }
+
+        public async Task<object> GetAllUsers() {
+         // Temporary until we called stored procedures
+            string query = $"SELECT * "+
+                            $"FROM user"+
+                            $"SORT BY ASCENDING;";
+            try{
+                // Establish MySqlConnection to be used for this DB operation
+                using (var conn = new MySqlConnection(getConnectionString())) {
+                    // Let the user know that 
+                    Console.WriteLine("Opening MySqlConnection!");
+                    conn.Open();
+                    // Build MySqlCommand
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    // Read Result from query with MySqlDataReader
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    // While there are results contained withint he MySqlDataReader, iterate through and print each 
+                    List<string> allUsers = new List<string>();   
+                    while (rdr.Read()) {
+                        // Print each entry (Idk if this is what we actually want to do?)
+                        allUsers.Add($"{rdr[0]} {rdr[1]}");
+                    }
+                    // Print 'Closing MySql' message to console
+                    Console.WriteLine("Closing MySqlConnection!");
+                    // Close connection
+                    conn.Close();
+                    // return the result of the query
+                    return allUsers;
+                }
+            // If there's an exception of any kind, print to console and then return the exception
+            } catch (Exception ex) {
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return ex;
+            }    
         }   
 
+        // This will be replaced by appsettings, or Secretsmanager or something. Exists now to keep things moving and create a proper connection string
         public string getConnectionString() {
             string server = "34.152.7.147";
             string port = "3308";
