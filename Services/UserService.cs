@@ -21,12 +21,12 @@ namespace smert.Services {
             return new Task<User>(new User(await _userRepository.InsertNewUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId)));
         }
         */
-        public async Task<object> GetUserById(int userId) {
-            return await _userRepository.GetUserById(userId);                
+        public async Task<User> GetUserById(int userId) {
+            return (User)(await _userRepository.GetUserById(userId));                
         }
 
-        public async Task<object> GetAllUsers() {
-            return await _userRepository.GetAllUsers();
+        public async Task<List<User>> GetAllUsers() {
+            return (List<User>) await _userRepository.GetAllUsers();
         }
                                            
     }

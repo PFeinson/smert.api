@@ -12,10 +12,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 using Google.Cloud.SecretManager;
 using smert.Services;
 using smert.Repositories;
+using smert.Configuration;
+using smert.Models;
+using smert.Models.DTO;
 
 namespace smert
 {
@@ -39,6 +44,8 @@ namespace smert
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "smert", Version = "v1" });
             });
+            services.AddMvc();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
