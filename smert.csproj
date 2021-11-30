@@ -6,18 +6,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySqlConnector" Version="2.0.0" />
+    <!-- Http / Web Api-->
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-    <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="1.7.0" />
-    <PackageReference Include="Google.Cloud.Iam.Credentials.V1" Version="1.2.0" />
-    <PackageReference Include="Google.Cloud.Spanner.Data" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.0" />
+    <!-- Regex-->
     <PackageReference Include="System.Text.RegularExpressions" version="4.3.1" />
+    <!-- AutoMapper-->
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <!-- MySql-->
     <PackageReference Include="MySql" Version="5.5.13" />
     <PackageReference Include="MySql.Data" Version="5.1.7" />
-    
+    <PackageReference Include="MySqlConnector" Version="2.0.0" />
+    <!-- Dapper / ORM-->
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <!-- Google Cloud Serices-->
+    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="1.7.0" />
+    <PackageReference Include="Google.Cloud.Iam.Credentials.V1" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

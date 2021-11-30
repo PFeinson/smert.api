@@ -23,10 +23,10 @@ namespace smert.Repositories {
             _logger = logger;
             _mapper = mapper;
         }
-        public async Task<User> GetUserById(int userId) {
+        public async Task<User?> GetUserById(int userId) {
             // Temporary until we called stored procedures
             string query = $"SELECT TOP 1 FROM\n"+
-                            $"user WHERE user_id = {userId}";
+                            $"user WHERE user_id = {userId};";
             try{
                 // Establish MySqlConnection to be used for this DB operation
                 using (var conn = new MySqlConnection(getConnectionString())) {
@@ -36,20 +36,22 @@ namespace smert.Repositories {
                     // Build MySqlCommand
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     // Read Result from query with MySqlDataReader into a List<User>                    
-                    var returnableUser = (User)cmd.ExecuteScalar();
-                    return returnableUser;
-                }
+                    var returnableUser = cmd.ExecuteScalar();
+                    Console.WriteLine("Does it even make it to this command?");
+                    conn.Close();
+                    return (User)returnableUser;
+                }  
             } catch (Exception ex) {
                 Console.WriteLine($"Exception: {ex.ToString()}");
-                return new User();
+                return null;
             }
         }
 
-        public async Task<List<User>> GetAllUsers() {
+        public async Task<List<User>?> GetAllUsers() {
             Console.WriteLine("Enters this method successfully! UserRepository.GetAllUsers()");
          // Temporary until we called stored procedures
-            string query = $"SELECT * "+
-                            $"FROM user"+
+            string query = $"SELECT * \n"+
+                            $"FROM user\n"+
                             $"SORT BY ASCENDING;";
             try{
                 List<User> allUsers = null;
@@ -64,7 +66,8 @@ namespace smert.Repositories {
                         cmd.ExecuteNonQueryAsync();
                         // While there are results contained withint he MySqlDataReader, iterate through and print each  
                         while (rdr.Read()) {
-                            allUsers.Add((User)(_mapper.Map<object, User>(rdr)));
+                            var newUser =  _mapper.Map<object, User>(rdr);
+                            allUsers.Add(newUser);
                         }    
                     }
                     // Print 'Closing MySql' message to console
@@ -72,13 +75,13 @@ namespace smert.Repositories {
                     // Close connection
                     conn.Close();
                     if (allUsers.Count == 0)
-                        return new List<User>();
+                        return null;
                     return allUsers; 
                 }
             // If there's an exception of any kind, print to console and then return the exception
             } catch (Exception ex) {
                 Console.WriteLine($"Exception: {ex.ToString()}");
-                return new List<User>();
+                return null;
             }    
         }   
 
@@ -86,13 +89,17 @@ namespace smert.Repositories {
         public string getConnectionString() {
             string server = "34.152.7.147";
             string port = "3308";
-            string database = "dev-smert-db";
             string uid = "dev-access-account";
             string password = "password";
+            /*
             string ssl_ca = ".ssl/server-ca.pem";
             string ssl_cert = ".ssl/client-cert.pem";
             string ssl_key = ".ssl/client-key.pem";
-            string connectionString = $"SERVER={server};DATABASE={database};PORT={port};UID={uid};PASSWORD={password};ssl-ca={ssl_ca};ssl-cert={ssl_cert};ssl_key{ssl_key};";
+            ==========================================
+            Add Below back to end of connection string:
+            ssl-ca={ssl_ca};ssl-cert={ssl_cert};ssl_key{ssl_key}
+            */
+            string connectionString = $"HOST={server};PORT={port};UID={uid};PASSWORD={password};";
             return connectionString;
         }
    

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace smert.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Weather/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -23,7 +23,7 @@ namespace smert.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("/WeatherForecast/")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
