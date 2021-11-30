@@ -1,8 +1,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using smert.Models;
-using smert.Services;
 using System.Threading.Tasks;
 using System;
 using System.Data;
@@ -14,6 +12,9 @@ using MySql.Data.MySqlClient;
 using MySql.Data;
 using System.Linq;
 using AutoMapper;
+using smert.Models;
+using smert.Models.ssl;
+using smert.Services;
 
 namespace smert.Repositories {
     public class UserRepository : IUserRepository {
@@ -30,14 +31,13 @@ namespace smert.Repositories {
             try{
                 // Establish MySqlConnection to be used for this DB operation
                 using (var conn = new MySqlConnection(getConnectionString())) {
-                    // Let the user know that 
-                    Console.WriteLine("Opening MySqlConnection!");
                     conn.Open();
+                    // Let the user know that its starting the MySqlConnection
+                    Console.WriteLine("Opening MySqlConnection!");
                     // Build MySqlCommand
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     // Read Result from query with MySqlDataReader into a List<User>                    
                     var returnableUser = cmd.ExecuteScalar();
-                    Console.WriteLine("Does it even make it to this command?");
                     conn.Close();
                     return (User)returnableUser;
                 }  
@@ -48,22 +48,22 @@ namespace smert.Repositories {
         }
 
         public async Task<List<User>?> GetAllUsers() {
-            Console.WriteLine("Enters this method successfully! UserRepository.GetAllUsers()");
          // Temporary until we called stored procedures
             string query = $"SELECT * \n"+
                             $"FROM user\n"+
-                            $"SORT BY ASCENDING;";
+                            $"SORT BY ASCENDING creation_date;";
             try{
                 List<User> allUsers = null;
                 // Establish MySqlConnection to be used for this DB operation
                 using (var conn = new MySqlConnection(getConnectionString())) {  
+                    conn.Open();
                     // Build MySqlCommand
                     MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.ExecuteNonQueryAsync(); 
                     using (var rdr = await cmd.ExecuteReaderAsync()) {
+                        allUsers = new List<User>();
                         // Let the user know that 
                         Console.WriteLine("Opening MySqlConnection!");
-                        conn.Open();
-                        cmd.ExecuteNonQueryAsync();
                         // While there are results contained withint he MySqlDataReader, iterate through and print each  
                         while (rdr.Read()) {
                             var newUser =  _mapper.Map<object, User>(rdr);
@@ -74,9 +74,11 @@ namespace smert.Repositories {
                     Console.WriteLine("Closing MySqlConnection!");
                     // Close connection
                     conn.Close();
-                    if (allUsers.Count == 0)
+                    if (allUsers.Equals(null)) {
                         return null;
-                    return allUsers; 
+                    } else {
+                        return allUsers.Count == 0 ? ( new List<User> { } ) : allUsers  ;
+                    }
                 }
             // If there's an exception of any kind, print to console and then return the exception
             } catch (Exception ex) {
@@ -91,15 +93,17 @@ namespace smert.Repositories {
             string port = "3308";
             string uid = "dev-access-account";
             string password = "password";
-            /*
-            string ssl_ca = ".ssl/server-ca.pem";
-            string ssl_cert = ".ssl/client-cert.pem";
-            string ssl_key = ".ssl/client-key.pem";
-            ==========================================
-            Add Below back to end of connection string:
-            ssl-ca={ssl_ca};ssl-cert={ssl_cert};ssl_key{ssl_key}
-            */
-            string connectionString = $"HOST={server};PORT={port};UID={uid};PASSWORD={password};";
+            // Instantiate objects to read key files through
+            // This will be moved somewhere better (TF or Secrets)
+            var ssl_ca = new ssl_ca();
+            var ssl_cert = new ssl_cert();
+            var ssl_key = new ssl_key();
+            // Assign them to strings for the connection string
+            string sslKey = ssl_key.getPrivateKey();
+            string sslCert = ssl_cert.getCertificate();
+            string sslCa = ssl_ca.getCertificate();
+
+            string connectionString = $"USER={uid};HOST={server};DATABASE=dev;PORT={port};";
             return connectionString;
         }
    

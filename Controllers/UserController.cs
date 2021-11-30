@@ -34,18 +34,21 @@ namespace smert.Controllers
         [HttpGet("/GetUserById/{id}/")]
         public async Task<ActionResult<User>> GetUserById(int id) {
             var fetchedUser = await _userService.GetUserById(id);
-            return fetchedUser != null ? Ok(fetchedUser) : NotFound("service returned null!");
-        }
-
-        [HttpGet("/DoesThisEvenWork/")]
-        public async Task<ActionResult<string>> TestReturnsAnything() {
-            return Ok("this is a test");
+            if( fetchedUser != null )  
+                return (fetchedUser == new User() ? NoContent() : Ok(fetchedUser));
+            else {
+                return NotFound("service returned null!");
+            }
         }
 
         [HttpGet("/GetAllUsers/")]
         public async Task<ActionResult<List<User>>> GetAllUsers() {
             List<User> allUsers = new List<User>() { _mapper.Map<User>(await _userService.GetAllUsers()) };
-            return allUsers.Count > 0 ? Ok(allUsers) : NoContent();
+            if (allUsers.Count > 0) {
+                return allUsers == new List<User>() ? NoContent() : Ok(allUsers);
+            } else {
+                return NotFound();
+            }
         }
         
     }
