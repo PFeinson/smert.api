@@ -99,13 +99,13 @@ namespace smert.Repositories {
                             var newUser = new User()
                             {
                                 userId = (int)values[0], 
-                                userName = (string)values[1],
+                                userName = (rdr.IsDBNull(1)) ? null : (string)values[1],
                                 emailAddress = (rdr.IsDBNull(2)) ? null : (string)values[2],
                                 password = (rdr.IsDBNull(3)) ? null : (string)values[3],
                                 title = (rdr.IsDBNull(4)) ? null : (string)values[4],
-                                firstName = (string)values[5],
+                                firstName = (rdr.IsDBNull(5)) ? null : (string)values[5],
                                 middleName = (rdr.IsDBNull(6)) ? null : (string)values[6],
-                                lastName = (string)values[7],
+                                lastName = (rdr.IsDBNull(7)) ? null : (string)values[7],
                                 suffix = (rdr.IsDBNull(8)) ? null : (string)values[8],
                                 gender = (rdr.IsDBNull(9)) ? null : (string)values[9],
                                 referralUserId = (rdr.IsDBNull(10)) ? null : (int)values[10],
