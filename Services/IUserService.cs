@@ -9,16 +9,16 @@ using smert.Repositories;
 namespace smert.Services {
     public interface IUserService {
         
-        Task<string> AddUser(int userId, string userName, string emailAddress, string password, string? title,
-                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
-                                        int? referralUserId );
-        
         Task<User> GetUserById(int userId);
         Task<List<User>> GetAllUsers();
-        /*
-        Task<User> InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,
+
+        Task<string> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+                                       string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
+                                       int? referralUserId);
+
+        Task<string> UpdateUser (int userId, string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
-                                        int? referralUserId );
-        */    
+                                        int? referralUserId, int? modifyUserId);
+            
     }
 }

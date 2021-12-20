@@ -47,14 +47,14 @@ namespace smert.Repositories {
                             int fieldCount = rdr.GetValues(values);
                             var newUser = new User()
                             {
-                                userId = (int)rdr[0], 
-                                userName = (string)rdr[1],
+                                userId = (rdr.IsDBNull(0)) ? null : (int)values[0],
+                                userName = (rdr.IsDBNull(1)) ? null : (string)values[1],
                                 emailAddress = (rdr.IsDBNull(2)) ? null : (string)values[2],
                                 password = (rdr.IsDBNull(3)) ? null : (string)values[3],
                                 title = (rdr.IsDBNull(4)) ? null : (string)values[4],
-                                firstName = (string)values[5],
+                                firstName = (rdr.IsDBNull(5)) ? null : (string)values[5],
                                 middleName = (rdr.IsDBNull(6)) ? null : (string)values[6],
-                                lastName = (string)values[7],
+                                lastName = (rdr.IsDBNull(7)) ? null : (string)values[7],
                                 suffix = (rdr.IsDBNull(8)) ? null : (string)values[8],
                                 gender = (rdr.IsDBNull(9)) ? null : (string)values[9],
                                 referralUserId = (rdr.IsDBNull(10)) ? null : (int)values[10],
@@ -98,7 +98,7 @@ namespace smert.Repositories {
                             int fieldCount = rdr.GetValues(values);
                             var newUser = new User()
                             {
-                                userId = (int)values[0], 
+                                userId = (rdr.IsDBNull(0)) ? null : (int)values[0], 
                                 userName = (rdr.IsDBNull(1)) ? null : (string)values[1],
                                 emailAddress = (rdr.IsDBNull(2)) ? null : (string)values[2],
                                 password = (rdr.IsDBNull(3)) ? null : (string)values[3],
@@ -120,8 +120,6 @@ namespace smert.Repositories {
                     }
                     // Print 'Closing MySql' message to console
                     Console.WriteLine("Closing MySqlConnection!");
-                    // Close connection
-                    conn.Close();
                     if (allUsers.Equals(null)) {
                         return null;
                     } else {
@@ -170,11 +168,11 @@ namespace smert.Repositories {
                         cmd.Parameters["@int_referral_user_id"].Direction = ParameterDirection.Input;
                         conn.Open();
                         await cmd.ExecuteNonQueryAsync();
-                        return $"User {userName} Added!";
                     }
                     Console.WriteLine("Closing MySqlConnection!");
                     // Close connection
                     conn.Close();
+                    return $"User {userName} Added!";
                 }
             // If there's an exception of any kind, print to console and then return the exception
             } catch (Exception ex) {
@@ -182,6 +180,62 @@ namespace smert.Repositories {
                 return null;
             }    
         }
-        
+
+        public async Task<string> UpdateUser(int userId, string userName, string emailAddress, string password, string? title,
+                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
+                                        int? referralUserId, int? modifyUserId)
+        {
+            try
+            {
+                // The user who is modifying this record is suppressing the previous one
+                int? suppressUserId = modifyUserId;
+                // Establish MySqlConnection to be used for this DB operation
+                using (var conn = new MySqlConnection(_connectionString.ConnectionString))
+                {
+                    // Build MySqlCommand
+                    using (MySqlCommand cmd = new MySqlCommand("usp_update_user", conn))
+                    {
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add(new MySqlParameter("@int_user_id", userId));
+                        cmd.Parameters["@int_user_id"].Direction = ParameterDirection.InputOutput ;
+                        cmd.Parameters.Add(new MySqlParameter("@str_user_name", userName));
+                        cmd.Parameters["@str_user_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_email_address", emailAddress));
+                        cmd.Parameters["@str_email_address"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_password", password));
+                        cmd.Parameters["@str_password"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_title", title));
+                        cmd.Parameters["@str_title"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_first_name", firstName));
+                        cmd.Parameters["@str_first_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_middle_name", middleName));
+                        cmd.Parameters["@str_middle_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_last_name", lastName));
+                        cmd.Parameters["@str_last_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_suffix", suffix));
+                        cmd.Parameters["@str_suffix"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_gender", gender));
+                        cmd.Parameters["@str_gender"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@int_referral_user_id", referralUserId));
+                        cmd.Parameters["@int_referral_user_id"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@int_modify_user_id", modifyUserId));
+                        cmd.Parameters["@int_modify_user_id"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@int_suppress_user_id", suppressUserId));
+                        cmd.Parameters["@int_suppress_user_id"].Direction = ParameterDirection.Input;
+                        conn.Open();
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                    Console.WriteLine("Closing MySqlConnection!");
+                    return $"User {userName} Updated!";
+                }
+                // If there's an exception of any kind, print to console and then return the exception
+            } catch (Exception ex) { 
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return null;
+            }
+        }
+
     }
 }

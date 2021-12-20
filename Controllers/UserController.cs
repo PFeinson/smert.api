@@ -60,8 +60,31 @@ namespace smert.Controllers
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId) {
             var result = await _userService.AddUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
-            return Ok(result);                            
+            if (result == "User {userName} Added!")
+            {
+                return Ok(result);
+            } else
+            {
+                return (result == null ? NoContent() : NotFound());
+            }
         }
-        
+
+        [HttpPatch("/ModifyUser/")]
+        [Produces("application/json")]
+        public async Task<ActionResult<string>> UpdateUser(int userId, string userName, string emailAddress, string password, string? title,
+                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
+                                        int? referralUserId, int? modifyUserId)
+        {
+            var result = await _userService.UpdateUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId, modifyUserId);
+            if (result == $"User {userName} Updated!")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return (result == null ? NoContent() : NotFound());
+            }
+        }
+
     }
 }

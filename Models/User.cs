@@ -7,7 +7,7 @@ using MySqlConnector;
 namespace smert.Models {
     public class User {
         [Required(ErrorMessage = "user id is required")]
-        public int userId {get; set;}
+        public int? userId {get; set;}
         [Required(ErrorMessage = "user name is required")]
         public string userName {get; set;}
         #nullable enable
