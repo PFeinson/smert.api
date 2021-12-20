@@ -31,6 +31,7 @@ namespace smert.Controllers
             _logger = logger;
             _userService = userService;
         }
+
         [HttpGet("/GetUserById/{id}/")]
         [Produces("application/json")]
         public async Task<ActionResult<User>> GetUserById(int id) {
@@ -51,6 +52,15 @@ namespace smert.Controllers
             } else {
                 return NoContent();
             }
+        }
+        
+        [HttpPut("/AddUser/")]
+        [Produces("application/json")]
+        public async Task<ActionResult<string>> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
+                                        int? referralUserId) {
+            var result = await _userService.AddUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
+            return Ok(result);                            
         }
         
     }

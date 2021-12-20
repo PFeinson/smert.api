@@ -1,3 +1,4 @@
+using System.Reflection.PortableExecutable;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -98,13 +99,13 @@ namespace smert.Repositories {
                             var newUser = new User()
                             {
                                 userId = (int)values[0], 
-                                userName = (string)values[1],
+                                userName = (rdr.IsDBNull(1)) ? null : (string)values[1],
                                 emailAddress = (rdr.IsDBNull(2)) ? null : (string)values[2],
                                 password = (rdr.IsDBNull(3)) ? null : (string)values[3],
                                 title = (rdr.IsDBNull(4)) ? null : (string)values[4],
-                                firstName = (string)values[5],
+                                firstName = (rdr.IsDBNull(5)) ? null : (string)values[5],
                                 middleName = (rdr.IsDBNull(6)) ? null : (string)values[6],
-                                lastName = (string)values[7],
+                                lastName = (rdr.IsDBNull(7)) ? null : (string)values[7],
                                 suffix = (rdr.IsDBNull(8)) ? null : (string)values[8],
                                 gender = (rdr.IsDBNull(9)) ? null : (string)values[9],
                                 referralUserId = (rdr.IsDBNull(10)) ? null : (int)values[10],
@@ -133,6 +134,54 @@ namespace smert.Repositories {
                 return null;
             }    
         }   
-   
+        
+        public async Task<string> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
+                                        int? referralUserId){
+            try{
+                // Establish MySqlConnection to be used for this DB operation
+                using (var conn = new MySqlConnection(_connectionString.ConnectionString)) {  
+                    // Build MySqlCommand
+                    using (MySqlCommand cmd = new MySqlCommand("usp_add_user", conn)) {
+                        
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add(new MySqlParameter("@int_user_id", userId));
+                        cmd.Parameters["@int_user_id"].Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new MySqlParameter("@str_user_name", userName));
+                        cmd.Parameters["@str_user_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_email_address", emailAddress));
+                        cmd.Parameters["@str_email_address"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_password", password));
+                        cmd.Parameters["@str_password"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_title", title));
+                        cmd.Parameters["@str_title"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_first_name", firstName));
+                        cmd.Parameters["@str_first_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_middle_name", middleName));
+                        cmd.Parameters["@str_middle_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_last_name", lastName));
+                        cmd.Parameters["@str_last_name"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_suffix", suffix));
+                        cmd.Parameters["@str_suffix"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@str_gender", gender));
+                        cmd.Parameters["@str_gender"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.Add(new MySqlParameter("@int_referral_user_id", referralUserId));
+                        cmd.Parameters["@int_referral_user_id"].Direction = ParameterDirection.Input;
+                        conn.Open();
+                        await cmd.ExecuteNonQueryAsync();
+                        return $"User {userName} Added!";
+                    }
+                    Console.WriteLine("Closing MySqlConnection!");
+                    // Close connection
+                    conn.Close();
+                }
+            // If there's an exception of any kind, print to console and then return the exception
+            } catch (Exception ex) {
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return null;
+            }    
+        }
+        
     }
 }
