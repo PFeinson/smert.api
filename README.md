@@ -18,8 +18,8 @@
 ####  II. Windows: ####
 #####     A. Open Powershell #####
 #####     B. Run "Set-ExecutionPolicy unrestricted" #####
-#####     C. Run ".\envSetup.ps1 #####
-#### III. Go to 'https://localhost:5001/index.html" ####
+#####     C. Run ".\envSetup.ps1" #####
+### III. Go to 'https://localhost:5001/index.html" ###
 
 # Google Cloud Requirements #
 ## API Setup Instructions ##
