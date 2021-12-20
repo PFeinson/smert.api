@@ -22,11 +22,11 @@ namespace smert.Services {
         }
         */
         public async Task<User> GetUserById(int userId) {
-            return (User)(await _userRepository.GetUserById(userId));                
+            return await _userRepository.GetUserById(userId);                
         }
 
         public async Task<List<User>> GetAllUsers() {
-            return (List<User>) await _userRepository.GetAllUsers();
+            return await _userRepository.GetAllUsers();
         }
                                            
     }

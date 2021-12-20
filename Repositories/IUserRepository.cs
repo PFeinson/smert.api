@@ -16,8 +16,7 @@ namespace smert.Repositories {
         Task<User> InsertNewUser(int userId, string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId );
-        */    
-        string getConnectionString();                            
+        */                               
         
     }
 }

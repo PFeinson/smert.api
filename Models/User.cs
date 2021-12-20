@@ -13,7 +13,7 @@ namespace smert.Models {
         #nullable enable
         public string? emailAddress {get; set;}
         [Required(ErrorMessage = "password is required")]
-        public string password {get; set;}
+        public string? password {get; set;}
         #nullable enable
         public string? title {get; set;}
         #nullable enable
