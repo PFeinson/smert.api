@@ -12,13 +12,15 @@ namespace smert.Services {
         Task<User> GetUserById(int userId);
         Task<List<User>> GetAllUsers();
 
-        Task<string> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+        Task<string> AddUser(string userName, string emailAddress, string password, string? title,
                                        string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                        int? referralUserId);
 
         Task<string> UpdateUser (int userId, string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId, int? modifyUserId);
+                                        
+        Task<string> DeleteUser(int userId);
             
     }
 }

@@ -21,6 +21,7 @@ namespace smert.Repositories {
         private readonly MySqlConnectionStringBuilder _connectionString;
         private readonly ILogger<UserRepository> _logger;
         private readonly IMapper _mapper;
+        private int lastUserId;
         public UserRepository(ILogger<UserRepository> logger, IMapper mapper, MySqlConnectionStringBuilder connectionString) {
             _logger = logger;
             _mapper = mapper;
@@ -45,6 +46,7 @@ namespace smert.Repositories {
                         while (rdr.Read()) {
                             Object[] values = new Object[rdr.FieldCount];
                             int fieldCount = rdr.GetValues(values);
+                            // Assign Values to new User Object
                             var newUser = new User()
                             {
                                 userId = (rdr.IsDBNull(0)) ? null : (int)values[0],
@@ -123,6 +125,8 @@ namespace smert.Repositories {
                     if (allUsers.Equals(null)) {
                         return null;
                     } else {
+                        lastUserId = allUsers.Count+1;
+                        Console.WriteLine(lastUserId);
                         return allUsers.Count == 0 ? ( new List<User> { } ) : allUsers  ;
                     }
                 }
@@ -133,7 +137,7 @@ namespace smert.Repositories {
             }    
         }   
         
-        public async Task<string> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+        public async Task<string> AddUser(string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId){
             try{
@@ -144,7 +148,7 @@ namespace smert.Repositories {
                         
                         cmd.CommandType = CommandType.StoredProcedure;
 
-                        cmd.Parameters.Add(new MySqlParameter("@int_user_id", userId));
+                        cmd.Parameters.Add(new MySqlParameter("@int_user_id", 5));
                         cmd.Parameters["@int_user_id"].Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new MySqlParameter("@str_user_name", userName));
                         cmd.Parameters["@str_user_name"].Direction = ParameterDirection.Input;
@@ -237,5 +241,26 @@ namespace smert.Repositories {
             }
         }
 
+        public async Task<string> DeleteUser(int userId) {
+            string query = $"DELETE FROM user WHERE user_id = {userId}";
+            try{
+                // Establish MySqlConnection to be used for this DB operation
+                using (var conn = new MySqlConnection(_connectionString.ConnectionString)) {  
+                    // Build MySqlCommand
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn)) {
+                        conn.Open();
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                    Console.WriteLine("Closing MySqlConnection!");
+                    // Close connection
+                    conn.Close();
+                    return $"User with userId {userId} has been deleted!";
+                }
+            // If there's an exception of any kind, print to console and then return the exception
+            } catch (Exception ex) {
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return null;
+            }    
+        }
     }
 }

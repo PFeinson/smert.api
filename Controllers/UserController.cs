@@ -56,11 +56,11 @@ namespace smert.Controllers
         
         [HttpPut("/AddUser/")]
         [Produces("application/json")]
-        public async Task<ActionResult<string>> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+        public async Task<ActionResult<string>> AddUser(string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId) {
-            var result = await _userService.AddUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
-            if (result == "User {userName} Added!")
+            var result = await _userService.AddUser(userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
+            if (result == $"User {userName} Added!")
             {
                 return Ok(result);
             } else
@@ -82,6 +82,17 @@ namespace smert.Controllers
             }
             else
             {
+                return (result == null ? NoContent() : NotFound());
+            }
+        }
+
+        [HttpDelete("/DeleteUser/{userId}/")]
+        [Produces("application/json")]
+        public async Task<ActionResult<string>> DeleteUser(int userId) {
+            var result = await _userService.DeleteUser(userId);
+            if (result == $"User with userId {userId} has been deleted!") {
+                return Ok(result);
+            } else {
                 return (result == null ? NoContent() : NotFound());
             }
         }

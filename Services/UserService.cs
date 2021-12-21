@@ -23,11 +23,11 @@ namespace smert.Services {
             return await _userRepository.GetAllUsers();
         }
 
-        public async Task<string> AddUser(int userId, string userName, string emailAddress, string password, string? title,
+        public async Task<string> AddUser(string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId)
         {
-            return await _userRepository.AddUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
+            return await _userRepository.AddUser(userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
         }
 
 
@@ -36,6 +36,10 @@ namespace smert.Services {
                                         int? referralUserId, int? modifyUserId)
         {
             return await _userRepository.UpdateUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId, modifyUserId);
+        }
+
+        public async Task<string> DeleteUser(int userId) {
+            return await _userRepository.DeleteUser(userId);
         }
     }
 }
