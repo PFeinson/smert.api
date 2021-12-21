@@ -41,5 +41,9 @@ namespace smert.Services {
         public async Task<string> DeleteUser(int userId) {
             return await _userRepository.DeleteUser(userId);
         }
+
+        public async Task<string> UpdateUserIDIncrementer() {
+            return await _userRepository.UpdateUserIDIncrementer();
+        }
     }
 }

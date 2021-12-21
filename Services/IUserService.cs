@@ -21,6 +21,8 @@ namespace smert.Services {
                                         int? referralUserId, int? modifyUserId);
                                         
         Task<string> DeleteUser(int userId);
+
+        Task<string> UpdateUserIDIncrementer();
             
     }
 }

@@ -22,7 +22,7 @@ namespace smert.Repositories {
                                         int? referralUserId, int? modifyUserId);
         
         Task<string> DeleteUser(int userId);
-
+        Task<string> UpdateUserIDIncrementer();
 
     }
 }

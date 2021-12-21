@@ -262,5 +262,26 @@ namespace smert.Repositories {
                 return null;
             }    
         }
+        public async Task<string> UpdateUserIDIncrementer() {
+            string query = $"ALTER TABLE user AUTO_INCREMENT = {lastUserId}";
+            try{
+                // Establish MySqlConnection to be used for this DB operation
+                using (var conn = new MySqlConnection(_connectionString.ConnectionString)) {  
+                    // Build MySqlCommand
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn)) {
+                        conn.Open();
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                    Console.WriteLine("Closing MySqlConnection!");
+                    // Close connection
+                    conn.Close();
+                    return $"Updated AutoIncrementer!";
+                }
+            // If there's an exception of any kind, print to console and then return the exception
+            } catch (Exception ex) {
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return null;
+            }    
+        }
     }
 }

@@ -97,5 +97,16 @@ namespace smert.Controllers
             }
         }
 
+        [HttpPatch("/UpdateUserIDIncrementer/")]
+        [Produces("application/json")]
+        public async Task<ActionResult<string>> UpdateUserIDIncrementer() {
+            var result = await _userService.UpdateUserIDIncrementer();
+            if (result == $"Updated AutoIncrementer!"){
+                return Ok(result);
+            } else {
+                return (result == null ? NoContent() : NotFound());
+            }
+        }
+
     }
 }
