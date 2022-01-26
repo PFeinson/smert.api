@@ -1,5 +1,4 @@
 using System.Reflection.PortableExecutable;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -16,6 +15,7 @@ using AutoMapper;
 using smert.Models;
 using smert.Models.ssl;
 using smert.Services;
+using System.Text.RegularExpressions;
 namespace smert.Repositories {
     public class UserRepository : IUserRepository {
         private readonly MySqlConnectionStringBuilder _connectionString;
@@ -282,6 +282,59 @@ namespace smert.Repositories {
                 Console.WriteLine($"Exception: {ex.ToString()}");
                 return null;
             }    
+        }
+
+        public async Task<User> login(string userName, string password) {
+            string query = $"SELECT * \n"+
+                            $"FROM user\n"+
+                            $"WHERE user_name='{userName}';";
+            try {
+                // Establishing MySql connection to be used for this DB operation
+                using (var conn = new MySqlConnection(_connectionString.ConnectionString)) {   
+                    // Build MySqlCommand
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn)) {
+                        User currentUser = null;
+                        conn.Open();
+                        await cmd.ExecuteNonQueryAsync();
+                        using (var rdr = await cmd.ExecuteReaderAsync()) {
+                            while (rdr.Read()) {
+                                Object[] values = new Object[rdr.FieldCount];
+                                int fieldCount = rdr.GetValues(values);
+                                currentUser = new User()
+                                {
+                                    userId = (rdr.IsDBNull(0)) ? null : (int)values[0], 
+                                    userName = (rdr.IsDBNull(1)) ? null : (string)values[1],
+                                    emailAddress = (rdr.IsDBNull(2)) ? null : (string)values[2],
+                                    password = (rdr.IsDBNull(3)) ? null : (string)values[3],
+                                    title = (rdr.IsDBNull(4)) ? null : (string)values[4],
+                                    firstName = (rdr.IsDBNull(5)) ? null : (string)values[5],
+                                    middleName = (rdr.IsDBNull(6)) ? null : (string)values[6],
+                                    lastName = (rdr.IsDBNull(7)) ? null : (string)values[7],
+                                    suffix = (rdr.IsDBNull(8)) ? null : (string)values[8],
+                                    gender = (rdr.IsDBNull(9)) ? null : (string)values[9],
+                                    referralUserId = (rdr.IsDBNull(10)) ? null : (int)values[10],
+                                    createTimestamp = (rdr.IsDBNull(11)) ? null : (DateTime)values[11],
+                                    suppressTimestamp = (rdr.IsDBNull(12)) ? null : (DateTime)values[12],
+                                    suppressUserId = (rdr.IsDBNull(13)) ? null : (int)values[13],
+                                    modifyTimestamp = (rdr.IsDBNull(14)) ? null : (DateTime)values[14],
+                                    modifyUserId = (rdr.IsDBNull(15)) ? null : (int)values[15]
+                                };
+                            }
+                            Console.WriteLine("Closing MySqlConnection");
+                            // Close Connection
+                            conn.Close();
+                            if (currentUser != null) {
+                                return (currentUser.password == password ) ? currentUser : new User();
+                            } else {
+                                return null;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Exception: {ex.ToString()}");
+                return null;
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ namespace smert.Services {
         Task<string> DeleteUser(int userId);
 
         Task<string> UpdateUserIDIncrementer();
-            
+
+        Task<User> login(string userName, string password);
     }
 }

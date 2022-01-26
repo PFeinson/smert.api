@@ -45,5 +45,13 @@ namespace smert.Services {
         public async Task<string> UpdateUserIDIncrementer() {
             return await _userRepository.UpdateUserIDIncrementer();
         }
+
+        public async Task<User> login(string userName, string password) {
+           try {
+                return await _userRepository.login(userName, password);
+           } catch (Exception e) {
+               return null;
+           }
+        }
     }
 }
