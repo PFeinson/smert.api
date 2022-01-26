@@ -28,7 +28,7 @@ namespace smert.Models {
         public string? gender {get; set;}
         public int? referralUserId {get; set;}
         [Required(ErrorMessage = "creation timestamp is required")]
-        public DateTime createTimestamp {get; set;}
+        public DateTime? createTimestamp {get; set;}
         #nullable enable
         public DateTime? suppressTimestamp {get; set;}
         #nullable enable

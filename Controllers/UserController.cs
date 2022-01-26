@@ -36,37 +36,30 @@ namespace smert.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<User>> GetUserById(int id) {
             var fetchedUser = await _userService.GetUserById(id);
-            if( fetchedUser != null )  
+            if( fetchedUser != null )
                 return (fetchedUser.Equals(new User()) ? NotFound("Service Returned Empty User") : Ok(fetchedUser));
-            else {
-                return NoContent();
-            }
+            return NoContent();
         }
 
         [HttpGet("/GetAllUsers/")]
         [Produces("application/json")]
         public async Task<ActionResult<List<User>>> GetAllUsers() {
             List<User> allUsers = await _userService.GetAllUsers();
-            if (allUsers != null && allUsers.Count > 0) {
+            
+            if (allUsers != null && allUsers.Count > 0)
                 return allUsers == new List<User>() ? NotFound("Service Returned a new List of Users!") : Ok(allUsers);
-            } else {
-                return NoContent();
-            }
+            return NoContent();
         }
         
         [HttpPut("/AddUser/")]
         [Produces("application/json")]
-        public async Task<ActionResult<string>> AddUser(string userName, string emailAddress, string password, string? title,
+        public async Task<ActionResult<object>> AddUser(string userName, string emailAddress, string password, string? title,
                                         string? firstName, string? middleName, string? lastName, string? suffix, string? gender,
                                         int? referralUserId) {
             var result = await _userService.AddUser(userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId);
             if (result == $"User {userName} Added!")
-            {
                 return Ok(result);
-            } else
-            {
-                return (result == null ? NoContent() : NotFound());
-            }
+            return (result == null ? NoContent() : NotFound());
         }
 
         [HttpPatch("/ModifyUser/")]
@@ -77,35 +70,17 @@ namespace smert.Controllers
         {
             var result = await _userService.UpdateUser(userId, userName, emailAddress, password, title, firstName, middleName, lastName, suffix, gender, referralUserId, modifyUserId);
             if (result == $"User {userName} Updated!")
-            {
                 return Ok(result);
-            }
-            else
-            {
-                return (result == null ? NoContent() : NotFound());
-            }
+            return (result == null ? NoContent() : NotFound());
         }
 
         [HttpDelete("/DeleteUser/{userId}/")]
         [Produces("application/json")]
         public async Task<ActionResult<string>> DeleteUser(int userId) {
             var result = await _userService.DeleteUser(userId);
-            if (result == $"User with userId {userId} has been deleted!") {
+            if (result == $"User with userId {userId} has been deleted!")
                 return Ok(result);
-            } else {
-                return (result == null ? NoContent() : NotFound());
-            }
-        }
-
-        [HttpPatch("/UpdateUserIDIncrementer/")]
-        [Produces("application/json")]
-        public async Task<ActionResult<string>> UpdateUserIDIncrementer() {
-            var result = await _userService.UpdateUserIDIncrementer();
-            if (result == $"Updated AutoIncrementer!"){
-                return Ok(result);
-            } else {
-                return (result == null ? NoContent() : NotFound());
-            }
+            return (result == null ? NoContent() : NotFound());
         }
 
     }
