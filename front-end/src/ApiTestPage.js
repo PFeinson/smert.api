@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { login, createUser } from './services/UserService';
+import { Button } from '@mui/material';
 
 // we test api calls before creating UI here
 
@@ -32,8 +33,8 @@ class apiTestPageComponent extends Component
             <div>
                 <h1>API Test Page</h1>
                 <div>
-                    <button onClick = {this.testLogginHandler}>Loggin</button>
-                    <button onClick = {this.testCreateNewUserHandler}>Create New Uer</button>
+                    <Button variant="outlined" onClick = {this.testLogginHandler}>Loggin</Button>
+                    <Button variant="contained" onClick = {this.testCreateNewUserHandler}>Create New User</Button>
                 </div>
                 <div>Result:</div>
             </div>
