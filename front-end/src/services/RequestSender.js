@@ -3,6 +3,8 @@
  * to issue http requests such as GET and POST.
  */
 
+export const devServer = 'https://localhost:5001'; 
+export const productionServer = 'production server';
 
 /**
  * 

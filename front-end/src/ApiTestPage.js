@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { login } from './services/UserService';
+import { login, createUser } from './services/UserService';
 
 // we test api calls before creating UI here
 
@@ -17,7 +17,13 @@ class apiTestPageComponent extends Component
 
     testCreateNewUserHandler = ()=>
     {
-        window.confirm("Testing new user");
+        let params = 
+        {
+            userName:     'Frodo',
+            emailAddress: 'frodo@somewhere.com',
+            password:     '1234'
+        };
+        createUser(params, true);
     }
 
     render()

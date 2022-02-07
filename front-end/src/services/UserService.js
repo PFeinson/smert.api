@@ -2,7 +2,7 @@
  * File contains calls to user endpoints 
  */
 
-import { get } from "./RequestSender";
+import { devServer, get, productionServer } from "./RequestSender";
 
 /**
  * Authenticates user.  
@@ -11,21 +11,26 @@ import { get } from "./RequestSender";
 export async function login(params, test = false)
 {
     //setup URL and params
-    let url = test ? 'https://localhost:5001' : 'production server';
+    let url = test ? devServer : productionServer;
     url += '/Login';
-
+    console.log(url);
     //TODO: change get to post once endpoint is rewritten 
     const response = await get(url, params);
     const data = await response.json();
-    console.log(data);
     return data;
 }
 
 /**
  * Creates new user with specified parameters. 
- * @param {object} data 
+ * @param {object} params 
  */
-export async function createUser(data, test = false)
+export async function createUser(params, test = false)
 {
-    //TODO: change get to post once endpoint is rewritten 
+    //setup URL and params
+    let url = test ? devServer : productionServer;
+    url += '/Registration';
+     //TODO: change get to post once endpoint is rewritten 
+     const response = await get(url, params);
+     const data = await response.json();
+     return data;
 }
