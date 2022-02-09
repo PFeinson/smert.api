@@ -17,6 +17,7 @@ export async function login(params, test = false)
     //TODO: change get to post once endpoint is rewritten 
     const response = await get(url, params);
     const data = await response.json();
+    console.log(data);
     return data;
 }
 
@@ -32,5 +33,6 @@ export async function createUser(params, test = false)
      //TODO: change get to post once endpoint is rewritten 
      const response = await get(url, params);
      const data = await response.json();
+     console.log(data);
      return data;
 }
