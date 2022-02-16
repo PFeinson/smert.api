@@ -1,24 +1,27 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-
+import { createUser } from '../../services/UserService';
 
 const registrationPageComponent = (props)=>
 {
     const submitHandler = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
+
+        let params = 
+        {
+            userName:     data.get('username'),
+            emailAddress: data.get('email'),
+            password:     data.get('password'),
+            firstName:    data.get('firstName'),
+            lastName:     data.get('lastName')
+        };
+        createUser(params, true);
     };
 
     return(
@@ -55,6 +58,16 @@ const registrationPageComponent = (props)=>
                         autoComplete="family-name"
                     />
                     </Grid> 
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
                             required

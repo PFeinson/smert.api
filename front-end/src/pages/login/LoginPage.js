@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { login } from '../../services/UserService';
 
 const loginPageComponent = (props)=>
 {
@@ -14,11 +15,8 @@ const loginPageComponent = (props)=>
   const submitHandler = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    login({userName: data.get('username'),
+           password: data.get('password')},true);
   };
 
     return(
@@ -37,10 +35,9 @@ const loginPageComponent = (props)=>
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Username"
+                  name="username"
                   autoFocus
                 />
                 <TextField
