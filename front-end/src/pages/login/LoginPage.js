@@ -70,7 +70,7 @@ const loginPageComponent = (props)=>
                     <Link href="#" variant="body2">Forgot password?</Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">Join now</Link>
+                    <Link href="/signup" variant="body2">Join now</Link>
                   </Grid>
                 </Grid>
             </Box>

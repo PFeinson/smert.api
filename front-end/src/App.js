@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Route, Routes} from 'react-router-dom'
 import './App.css';
 //import ApiTestPage from './ApiTestPage';
 import LoginPage from './pages/login/LoginPage'
@@ -10,7 +11,11 @@ class App extends Component
   {
     return (
       <div>
-          <RegistrationPage/>
+        <Routes>
+          <Route path = "/login" element={<LoginPage/>}/>
+          <Route path = "/signup" element={<RegistrationPage/>}/>
+        </Routes>
+       
       </div>
     );
   }
